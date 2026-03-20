@@ -1,0 +1,36 @@
+{
+  "name": "plex-music-player-electron",
+  "version": "0.1.0",
+  "main": "dist/electron-main/main.js",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm:dev:electron\" \"npm:dev:renderer\"",
+    "dev:electron": "tsc -p electron-main --watch & wait-on tcp:3000 && electron .",
+    "dev:renderer": "next dev -p 3000",
+    "build": "next build && next export && tsc -p electron-main && electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^27.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4",
+    "concurrently": "^8.0.1",
+    "electron-builder": "^24.13.3",
+    "wait-on": "^7.0.1"
+  },
+  "build": {
+    "appId": "com.rgbwomble.plexmusicplayer",
+    "files": [
+      "dist/electron-main/**/*",
+      "renderer/out/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "asar": true
+  }
+}
